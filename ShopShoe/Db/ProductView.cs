@@ -17,7 +17,7 @@ namespace ShopShoe.Db
         {
             if (Discount > 15)
             {
-                return (Brush)ColorConverter.ConvertFromString("#2e8b57");
+                return (Brush)new BrushConverter().ConvertFromString("#2e8b57");
             }
             if (AmountStock <= 0)
             {

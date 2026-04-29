@@ -35,6 +35,34 @@
                        Margin="10 10"
                        Grid.Row="1"
                        />
+            <StackPanel Orientation="Horizontal" 
+                        Grid.Row="2">
+                <ComboBox x:Name="SortingCombobox"
+                          SelectedIndex="0"
+                          Margin="20 5"
+                          Width="200"
+                          SelectionChanged="SortingCombobox_SelectionChanged"
+                          >
+                    <ComboBoxItem Content="По умоланию"/>
+                   
+                    <ComboBoxItem Content="По убыванию"/>
+                    <ComboBoxItem Content="По возрастанию"/>
+                </ComboBox>
+                <ComboBox x:Name="FilterCombobox"
+                          SelectedIndex="0"
+                          Margin="20 5"
+                          Width="200"
+                          SelectionChanged="FilterCombobox_SelectionChanged"
+                          >
+                </ComboBox>
+                <TextBox x:Name="SearchTextBox"
+                         TextChanged="SearchTextBox_TextChanged"
+                         Margin="20 5"
+                         Width="200"
+                         Text="">
+                    
+                </TextBox>
+            </StackPanel>
            
         </Grid>
         
