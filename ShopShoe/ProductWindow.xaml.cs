@@ -87,7 +87,7 @@ namespace ShopShoe
             string filter = FilterCombobox.SelectedItem as string ?? "Все поставщики";
             int sort = SortingCombobox.SelectedIndex;
 
-            if (!string.IsNullOrWhiteSpace(search))
+            if (!string.IsNullOrWhiteSpace(search.TrimEnd()))
             {
                 query = query.Where(p => (p.Name != null && p.Name.ToLower().Contains(search.ToLower())) ||
                 (p.Description != null && p.Description.ToLower().Contains(search.ToLower())) ||
@@ -108,6 +108,22 @@ namespace ShopShoe
             }
             ProductList.ItemsSource = query.ToList();
 
+        }
+
+        private void AddButton_Click(object sender, RoutedEventArgs e)
+        {
+            new ProductEditWindow().Show();
+            Close();
+
+        }
+
+        private void Border_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (ProductList.SelectedItem is Product selectedProduct)
+            {
+                new ProductEditWindow(selectedProduct).Show();
+                Close();
+            }
         }
     }
 }

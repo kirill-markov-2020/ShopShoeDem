@@ -5,7 +5,7 @@
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <Style TargetType="Window" x:Key="WindowStyle">
-            <Setter Property="Icon" Value="/Resources/Icon.png"/>
+            <Setter Property="Icon" Value="/res/Icon.png"/>
         </Style>
         <Style TargetType="TextBlock">
             <Setter Property="FontFamily" Value="Times New Roman"/>

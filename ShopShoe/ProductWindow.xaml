@@ -8,7 +8,8 @@
         Title="Товары" 
         Height="600" 
         Width="800"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        Style="{StaticResource WindowStyle}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="75*"/>
@@ -67,13 +68,16 @@
         </Grid>
         
 
-        <ListBox x:Name="ProductList" Grid.Row="1" HorizontalContentAlignment="Stretch">
+        <ListBox x:Name="ProductList" 
+                 Grid.Row="1" 
+                 HorizontalContentAlignment="Stretch"
+                 MouseDown="Border_MouseDown">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Border CornerRadius="10" 
                         BorderBrush="Black" 
                         BorderThickness="2" 
-                        
+                        MouseDown="Border_MouseDown"
                         Padding="10"
                         Background="{Binding BackgroundColor}"
                         
@@ -88,7 +92,7 @@
                                     Height="80"
                                     Margin="15 0"
                                     >
-                                <Image Source="{Binding Photo}"/>
+                                <Image Source="{Binding NewPhoto}"/>
 
                             </Border>
 
@@ -142,6 +146,13 @@
                 Grid.Row="2"
                 Click="Button_Click"
                  />
+        <Button Content="Добавить товар"
+        Margin="10 10"
+        HorizontalAlignment="Right" 
+        VerticalAlignment="Center"
+        Grid.Row="2"
+        Click="AddButton_Click"
+         />
 
     </Grid>
 </Window>

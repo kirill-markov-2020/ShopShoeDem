@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,7 @@ namespace ShopShoe.Db
     {
         public decimal NewPrice => Price * (1 - (Discount / 100));
         public Brush BackgroundColor => GetBack();
+        public string NewPhoto => GetPhotoPath();
 
         
         public Brush GetBack()
@@ -24,6 +26,15 @@ namespace ShopShoe.Db
                 return Brushes.LightBlue;
             }
             return Brushes.Chartreuse;
+        }
+        public string GetPhotoPath()
+        {
+            if (string.IsNullOrWhiteSpace(Photo))
+            {
+                return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "res", "picture.png");
+
+            }
+            return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Photo);
         }
 
     }
