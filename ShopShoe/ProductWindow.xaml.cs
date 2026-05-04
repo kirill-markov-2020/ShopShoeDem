@@ -1,18 +1,11 @@
 ﻿using ShopShoe.Db;
 using ShopShoe.Helpers;
-using System;
+using ShopShoe.Statics;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace ShopShoe
 {
@@ -22,19 +15,29 @@ namespace ShopShoe
     public partial class ProductWindow : Window
     {
         private List<Product> _products = new List<Product>();
-        private ShopShoeDbEntities _db = new ShopShoeDbEntities(); 
+        private ShopShoeDbEntities _db = new ShopShoeDbEntities();
+        private ImageHelper ImageHelper = new ImageHelper();
+
         public ProductWindow(User user)
         {
             InitializeComponent();
             FIO.Text = $"{user.Surname} {user.Name} {user.Patronymic}".Trim();
             LoadProducts();
             LoadData();
+            ImageHelper.DeleteOldImages();
+            AddProductButton.Visibility = CurrentSession.IsAdmin ? Visibility.Visible : Visibility.Collapsed;
+            FilterPanel.Visibility = CurrentSession.IsManager ? Visibility.Visible : Visibility.Collapsed;
         }
         public ProductWindow()
         {
             InitializeComponent();
             LoadProducts();
             LoadData();
+            ImageHelper.DeleteOldImages();
+            AddProductButton.Visibility = Visibility.Collapsed;
+            FilterPanel.Visibility = Visibility.Collapsed;
+
+
         }
 
         public void LoadProducts()
@@ -119,6 +122,11 @@ namespace ShopShoe
 
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)
         {
+
+            if (CurrentSession.CurrentUser == null || !CurrentSession.IsAdmin)
+            {
+                return;
+            }
             if (ProductList.SelectedItem is Product selectedProduct)
             {
                 new ProductEditWindow(selectedProduct).Show();

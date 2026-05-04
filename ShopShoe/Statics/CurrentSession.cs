@@ -7,9 +7,10 @@ using System.Threading.Tasks;
 
 namespace ShopShoe.Statics
 {
-    public class CurrentSession
+    public static class CurrentSession
     {
         public static User CurrentUser { get; set; }
-
+        public static bool IsAdmin => CurrentUser.Role.Name == "Администратор";
+        public static bool IsManager => CurrentUser.Role.Name == "Менеджер" || IsAdmin;
     }
 }

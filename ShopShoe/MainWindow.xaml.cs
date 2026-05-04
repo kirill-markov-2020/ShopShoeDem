@@ -24,6 +24,7 @@ namespace ShopShoe
     public partial class MainWindow : Window
     {
         private ShopShoeDbEntities _db = new ShopShoeDbEntities();
+        private ImageHelper ImageHelper = new ImageHelper();
         public MainWindow()
         {
             InitializeComponent();

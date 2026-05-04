@@ -17,6 +17,7 @@ using System.Drawing;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Path = System.IO.Path;
+using System.Data.Entity.Migrations;
 
 namespace ShopShoe
 {
@@ -27,6 +28,7 @@ namespace ShopShoe
     {
         private ShopShoeDbEntities _db = new ShopShoeDbEntities();
         private Product _currentProduct;
+        private ImageHelper ImageHelper = new ImageHelper();
         private string _photoPath = null;
         public ProductEditWindow()
         {
@@ -35,8 +37,10 @@ namespace ShopShoe
             Title = "Добавление товара";
             IdTextBox.Visibility = Visibility.Collapsed;
             IdTextBlock.Visibility = Visibility.Collapsed;
+            DeleteButton.Visibility = Visibility.Collapsed;
             LoadComboBoxes();
-            LoadBlankImage();
+
+            
         }
         public ProductEditWindow(Product product)
         {
@@ -82,17 +86,9 @@ namespace ShopShoe
                     ProductImage.Source = new BitmapImage(new Uri(ImagePath));
                     return;
                 }
-                LoadBlankImage();
             }
         }
-        public void LoadBlankImage()
-        {
-            string blankPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "res", "picture.png");
-            if (File.Exists (blankPath))
-            {
-                ProductImage.Source = new BitmapImage(new Uri (blankPath));
-            }
-        }
+        
 
         private void PhotoButton_Click(object sender, RoutedEventArgs e)
         {
@@ -147,6 +143,7 @@ namespace ShopShoe
             }
             try
             {
+
                 if (_currentProduct == null)
                 {
                     _currentProduct = new Product();
@@ -164,20 +161,18 @@ namespace ShopShoe
                 _currentProduct.UnitId = (UnitComboBox.SelectedItem as Unit).Id;
                 if (!string.IsNullOrEmpty(_photoPath))
                 {
-                   /* if (!string.IsNullOrEmpty(_currentProduct?.Photo))
-                    {
-                        string oldPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, _currentProduct.Photo);
-
-                        if (File.Exists(oldPath))
-                            File.Delete(oldPath);
-                    }*/
+                    
                     string fileName = Path.GetFileName(_photoPath);
                     string destPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "res", fileName);
                     File.Copy(_photoPath, destPath, true);
                     _currentProduct.Photo = "res/" + fileName;
                 }
+                _db.Product.AddOrUpdate(_currentProduct);
+
+
                 _db.SaveChanges();
-                MessageHelper.ShowInformation("Товар сохарнён!");
+
+                MessageHelper.ShowInformation("Товар сохранён!");
                 GoBack();
             }
             catch (Exception ex)
@@ -193,6 +188,25 @@ namespace ShopShoe
         {
             new ProductWindow().Show();
             Close();
+        }
+
+        private void DeleteButton_Click(object sender, RoutedEventArgs e)
+        {
+            var itemsInOrder = _db.OrderItem.Select(op => op.ProductId).ToList();
+            if (!itemsInOrder.Contains(_currentProduct.Id))
+            {
+                var productToDelete = _db.Product.FirstOrDefault(p => p.Id == _currentProduct.Id);
+
+                _db.Product.Remove(productToDelete);
+                _db.SaveChanges();
+                MessageHelper.ShowInformation($"Товар {_currentProduct.Name} был удален!");
+                GoBack();
+
+            }
+            else
+                MessageHelper.ShowError($"Данный товар присутствует в заказе!");
+            
+           
         }
     }
 }

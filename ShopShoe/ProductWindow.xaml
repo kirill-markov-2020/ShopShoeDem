@@ -37,6 +37,7 @@
                        Grid.Row="1"
                        />
             <StackPanel Orientation="Horizontal" 
+                        x:Name="FilterPanel"
                         Grid.Row="2">
                 <ComboBox x:Name="SortingCombobox"
                           SelectedIndex="0"
@@ -92,7 +93,7 @@
                                     Height="80"
                                     Margin="15 0"
                                     >
-                                <Image Source="{Binding NewPhoto}"/>
+                                <Image Source="{Binding NewPhoto, TargetNullValue=res/picture.png}"/>
 
                             </Border>
 
@@ -147,6 +148,7 @@
                 Click="Button_Click"
                  />
         <Button Content="Добавить товар"
+                x:Name="AddProductButton"
         Margin="10 10"
         HorizontalAlignment="Right" 
         VerticalAlignment="Center"

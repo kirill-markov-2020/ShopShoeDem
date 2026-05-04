@@ -151,6 +151,14 @@
                     Grid.Column="1"
                     Grid.Row="12"
                     Margin="5"/>
+            <Button x:Name="DeleteButton"
+                    Content="Удалить"
+                    Grid.Row="14"
+                    Grid.ColumnSpan="2"
+                    HorizontalAlignment="Right"
+                    Width="100"
+                    Margin="5"
+                    Click="DeleteButton_Click"/>
             <Button x:Name="SaveButton"
                     Content="Сохранить"
                     Grid.Row="14"

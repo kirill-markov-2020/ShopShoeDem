@@ -63,6 +63,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Db\ProductView.cs" />
+    <Compile Include="Helpers\ImageHelper.cs" />
     <Compile Include="ProductEditWindow.xaml.cs">
       <DependentUpon>ProductEditWindow.xaml</DependentUpon>
     </Compile>

@@ -31,7 +31,7 @@ namespace ShopShoe.Db
         {
             if (string.IsNullOrWhiteSpace(Photo))
             {
-                return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "res", "picture.png");
+                return null;//Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "res", "picture.png");
 
             }
             return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Photo);
