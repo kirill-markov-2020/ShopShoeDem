@@ -17,13 +17,13 @@ namespace ShopShoe.Db
         {
             if (Discount > 15)
             {
-                return (Brush)new BrushConverter().ConvertFromString("#2e8b57");
+                return new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2e8b57"));
             }
             if (AmountStock <= 0)
             {
                 return Brushes.LightBlue;
             }
-            return Brushes.Chartreuse;
+            return new SolidColorBrush((Color)ColorConverter.ConvertFromString("#7FFF00"));
         }
 
     }

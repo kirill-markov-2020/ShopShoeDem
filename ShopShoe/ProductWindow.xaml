@@ -4,11 +4,15 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ShopShoe"
+        xmlns:converters="clr-namespace:ShopShoe.Converters"
         mc:Ignorable="d"
         Title="Товары" 
         Height="600" 
         Width="800"
         WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <converters:ImagePathConverter x:Key="ImagePathConverter"/>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="75*"/>
@@ -88,7 +92,10 @@
                                     Height="80"
                                     Margin="15 0"
                                     >
-                                <Image Source="{Binding Photo}"/>
+                                <Image Source="{Binding Photo, Converter={StaticResource ImagePathConverter}}"
+                                       Width="80"
+                                       Height="80"
+                                       />
 
                             </Border>
 
