@@ -71,7 +71,7 @@
         </Grid>
         
 
-        <ListBox x:Name="ProductList" Grid.Row="1" HorizontalContentAlignment="Stretch">
+        <ListBox x:Name="ProductList" Grid.Row="1" HorizontalContentAlignment="Stretch" MouseDoubleClick="ProductList_MouseDoubleClick">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Border CornerRadius="10" 
@@ -82,6 +82,12 @@
                         Background="{Binding BackgroundColor}"
                         
                         >
+                        <Border.ContextMenu>
+                            <ContextMenu >
+                                <MenuItem Name="EditProduct" Header="Редактировать" Click="EditProduct_Click" Tag="{Binding}"/>
+                                <MenuItem Name="DeleteProduct" Header="Удалить" Click="DeleteProduct_Click" Tag="{Binding}"/>
+                            </ContextMenu>
+                        </Border.ContextMenu>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
@@ -149,6 +155,15 @@
                 Grid.Row="2"
                 Click="Button_Click"
                  />
+        <Button x:Name="AddProductButton" 
+            Content="Добавить товар" 
+            Margin="20 5" 
+            Width="120"
+            HorizontalAlignment="Right" 
+            VerticalAlignment="Center"
+            Grid.Row="2"
+            Click="AddProductButton_Click"
+           />
 
     </Grid>
 </Window>
