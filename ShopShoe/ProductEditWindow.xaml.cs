@@ -7,6 +7,9 @@ using Microsoft.Win32;
 using System.IO;
 using System.Windows.Media.Imaging;
 using System.Text;
+using System.Windows.Controls;
+using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace ShopShoe
 {
@@ -225,9 +228,37 @@ namespace ShopShoe
             string fileName = Guid.NewGuid().ToString() + Path.GetExtension(sourcePath);
             string targetPath = Path.Combine(targetDir, fileName);
             File.Copy(sourcePath, targetPath, true);
+            ResizeImage(sourcePath, targetPath, 300, 200);
             return targetPath;
         }
+        private void ResizeImage(string sourcePath, string targetPath, int maxWidth, int maxHeight)
+        {
+            using (var srcImage = System.Drawing.Image.FromFile(sourcePath))
+            {
+                int newWidth, newHeight;
 
+                if (srcImage.Width > srcImage.Height)
+                {
+                    newWidth = maxWidth;
+                    newHeight = (int)((double)srcImage.Height / srcImage.Width * maxWidth);
+                }
+                else
+                {
+                    newHeight = maxHeight;
+                    newWidth = (int)((double)srcImage.Width / srcImage.Height * maxHeight);
+                }
+
+                using (var destImage = new Bitmap(newWidth, newHeight))
+                {
+                    using (var graphics = Graphics.FromImage(destImage))
+                    {
+                        graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+                        graphics.DrawImage(srcImage, 0, 0, newWidth, newHeight);
+                    }
+                    destImage.Save(targetPath, ImageFormat.Jpeg);
+                }
+            }
+        }
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
             DialogResult = false;

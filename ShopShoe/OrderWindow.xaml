@@ -24,7 +24,7 @@
         
 
 
-        <ListBox x:Name="ProductList" Grid.Row="1" HorizontalContentAlignment="Stretch" >
+        <ListBox x:Name="OrderList" Grid.Row="1" HorizontalContentAlignment="Stretch" MouseDoubleClick="OrderList_MouseDoubleClick">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Border CornerRadius="10" 
@@ -37,8 +37,8 @@
                     >
                         <Border.ContextMenu>
                             <ContextMenu >
-                                <MenuItem Name="EditProduct" Header="Редактировать" Tag="{Binding}"/>
-                                <MenuItem Name="DeleteProduct" Header="Удалить"  Tag="{Binding}"/>
+                                <MenuItem Name="EditOrder" Header="Редактировать" Tag="{Binding}" Click="EditOrder_Click"/>
+                                <MenuItem Name="DeleteOrder" Header="Удалить"  Tag="{Binding}" Click="DeleteOrder_Click"/>
                             </ContextMenu>
                         </Border.ContextMenu>
                         <Grid>
@@ -87,7 +87,7 @@
             HorizontalAlignment="Left" 
             VerticalAlignment="Center"
             Grid.Row="2"
-           
+            Click="Button_Click"
              />
        
         <Button x:Name="AddOrderButton" 
@@ -97,7 +97,7 @@
         HorizontalAlignment="Right" 
         VerticalAlignment="Center"
         Grid.Row="2"
-       
+       Click="AddOrderButton_Click"
        />
 
     </Grid>
