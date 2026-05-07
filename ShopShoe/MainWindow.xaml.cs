@@ -47,7 +47,7 @@ namespace ShopShoe
 
         private void TextBlock_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            new ProductWindow().Show();
+            new OrderWindow().Show();
             Close();
         }
     }

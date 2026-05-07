@@ -26,6 +26,7 @@ namespace ShopShoe.Db
         public int UserId { get; set; }
         public int GetCode { get; set; }
         public int StatusId { get; set; }
+        public string Article { get; set; }
     
         public virtual PickUpPoint PickUpPoint { get; set; }
         public virtual Status Status { get; set; }

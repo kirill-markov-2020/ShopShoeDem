@@ -1,0 +1,104 @@
+﻿<Window x:Class="ShopShoe.OrderWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ShopShoe"
+        mc:Ignorable="d"
+        Title="OrderWindow" Height="600" Width="800" WindowStartupLocation="CenterScreen" Style="{StaticResource WindowStyle}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="75*"/>
+            <RowDefinition Height="300*"/>
+            <RowDefinition Height="75*"/>
+        </Grid.RowDefinitions>
+        
+            
+        <TextBlock Text="Заказы" 
+                HorizontalAlignment="Center" 
+                VerticalAlignment="Top"
+                Margin="10 10"
+                />
+            
+
+        
+
+
+        <ListBox x:Name="ProductList" Grid.Row="1" HorizontalContentAlignment="Stretch" >
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Border CornerRadius="10" 
+                    BorderBrush="Black" 
+                    BorderThickness="2" 
+                    
+                    Padding="10"
+                    Background="#7FFF00"
+                    
+                    >
+                        <Border.ContextMenu>
+                            <ContextMenu >
+                                <MenuItem Name="EditProduct" Header="Редактировать" Tag="{Binding}"/>
+                                <MenuItem Name="DeleteProduct" Header="Удалить"  Tag="{Binding}"/>
+                            </ContextMenu>
+                        </Border.ContextMenu>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="150"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Border Grid.Column="0" BorderBrush="Black" BorderThickness="1" Padding="10" Margin="5">
+                                <StackPanel Grid.Column="0">
+
+                                    <TextBlock FontWeight="Bold">
+    <Run Text="Артикул заказа: "/>
+    <Run Text="{Binding Article}"/>
+                                    </TextBlock>
+                                    <TextBlock>
+    <Run Text="Статус заказа: "/>
+    <Run Text="{Binding Status.Name}"/>
+                                    </TextBlock>
+                                    <TextBlock>
+    <Run Text="Адрес пункта выдачи: "/>
+    <Run Text="{Binding PickUpPoint.FullAddress, Mode=OneWay}"/>
+                                    </TextBlock>
+                                    <TextBlock Grid.Column="0">
+        <Run Text="Дата заказа: "/>
+        <Run Text="{Binding OrderDate, StringFormat=dd.MM.yyyy}"/>
+                                    </TextBlock>
+
+                                </StackPanel>
+                            </Border>
+                            
+                            <Border Grid.Column="1" BorderBrush="Black" BorderThickness="2" Padding="10" Margin="5">
+                                <TextBlock >
+                                    <Run Text="🚚"/>
+                                    <Run Text="{Binding DeliveryDate, StringFormat=dd.MM.yyyy}"/>
+                                </TextBlock>
+                            </Border>
+                            
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <Button Content="Выйти"
+            Margin="10 10"
+            HorizontalAlignment="Left" 
+            VerticalAlignment="Center"
+            Grid.Row="2"
+           
+             />
+       
+        <Button x:Name="AddOrderButton" 
+        Content="Добавить заказ" 
+        Margin="20 5" 
+        Width="120"
+        HorizontalAlignment="Right" 
+        VerticalAlignment="Center"
+        Grid.Row="2"
+       
+       />
+
+    </Grid>
+</Window>

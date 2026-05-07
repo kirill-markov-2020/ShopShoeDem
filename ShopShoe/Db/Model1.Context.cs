@@ -34,6 +34,7 @@ namespace ShopShoe.Db
         public DbSet<Role> Role { get; set; }
         public DbSet<Status> Status { get; set; }
         public DbSet<Supplier> Supplier { get; set; }
+        public DbSet<sysdiagrams> sysdiagrams { get; set; }
         public DbSet<Unit> Unit { get; set; }
         public DbSet<User> User { get; set; }
     }

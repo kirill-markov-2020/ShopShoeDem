@@ -65,6 +65,8 @@ namespace ShopShoe
             SortingCombobox.Visibility = Visibility.Collapsed;
             FilterCombobox.Visibility = Visibility.Collapsed;
             SearchTextBox.Visibility = Visibility.Collapsed;
+            OrderButton.Visibility = Visibility.Collapsed;
+
 
             switch (roleId)
             {
@@ -73,12 +75,15 @@ namespace ShopShoe
                     SortingCombobox.Visibility = Visibility.Visible;
                     FilterCombobox.Visibility = Visibility.Visible;
                     SearchTextBox.Visibility = Visibility.Visible;
+                    OrderButton.Visibility = Visibility.Visible;
                     break;
 
                 case 2:
                     SortingCombobox.Visibility = Visibility.Visible;
                     FilterCombobox.Visibility = Visibility.Visible;
                     SearchTextBox.Visibility = Visibility.Visible;
+                    OrderButton.Visibility = Visibility.Visible;
+
                     break;
 
                 case 3:
@@ -116,6 +121,9 @@ namespace ShopShoe
             {
                 query = query.Where(p => (p.Name != null && p.Name.ToLower().Contains(search.ToLower())) ||
                 (p.Description != null && p.Description.ToLower().Contains(search.ToLower())) ||
+                (p.Category != null && p.Category.Name.ToLower().Contains(search.ToLower())) ||
+                (p.Unit != null && p.Unit.Name.ToLower().Contains(search.ToLower())) ||
+                (p.Producer != null && p.Producer.Name.ToLower().Contains(search.ToLower())) ||
                 (p.Supplier != null && p.Supplier.Name.ToLower().Contains(search.ToLower())));
             }
             if (filter != "Все поставщики")
@@ -244,6 +252,12 @@ namespace ShopShoe
             }
             return false;
         }
-        
+
+        private void OrderButton_Click(object sender, RoutedEventArgs e)
+        {
+            OrderWindow orderWindow = new OrderWindow();
+            orderWindow.Show();
+            Close();
+        }
     }
 }

@@ -9,7 +9,8 @@
         Height="700" 
         Width="600"
         WindowStartupLocation="CenterScreen"
-        ResizeMode="NoResize">
+        ResizeMode="NoResize"
+        Style="{StaticResource WindowStyle}">
 
     <Grid Margin="10">
         <Grid.RowDefinitions>

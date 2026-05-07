@@ -9,7 +9,8 @@
         Title="Товары" 
         Height="600" 
         Width="800"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        Style="{StaticResource WindowStyle}">
     <Window.Resources>
         <converters:ImagePathConverter x:Key="ImagePathConverter"/>
     </Window.Resources>
@@ -155,11 +156,20 @@
                 Grid.Row="2"
                 Click="Button_Click"
                  />
+        <Button x:Name="OrderButton" 
+                Content="Заказы" 
+                Margin="20 5" 
+                Width="120"
+                HorizontalAlignment="Right" 
+                VerticalAlignment="Center"
+                Grid.Row="2"
+                Click="OrderButton_Click"
+               />   
         <Button x:Name="AddProductButton" 
             Content="Добавить товар" 
             Margin="20 5" 
             Width="120"
-            HorizontalAlignment="Right" 
+            HorizontalAlignment="Center" 
             VerticalAlignment="Center"
             Grid.Row="2"
             Click="AddProductButton_Click"

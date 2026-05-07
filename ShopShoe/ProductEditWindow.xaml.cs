@@ -222,11 +222,9 @@ namespace ShopShoe
             string targetDir = AppDomain.CurrentDomain.BaseDirectory + "res/";
             if (!Directory.Exists(targetDir))
                 Directory.CreateDirectory(targetDir);
-
             string fileName = Guid.NewGuid().ToString() + Path.GetExtension(sourcePath);
             string targetPath = Path.Combine(targetDir, fileName);
             File.Copy(sourcePath, targetPath, true);
-
             return targetPath;
         }
 
