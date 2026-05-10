@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ShopShoe"
         mc:Ignorable="d"
-        Title="OrderWindow" Height="600" Width="800" WindowStartupLocation="CenterScreen" Style="{StaticResource WindowStyle}">
+        Title="Заказы" Height="600" Width="800" WindowStartupLocation="CenterScreen" Style="{StaticResource WindowStyle}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="75*"/>

@@ -1,15 +1,14 @@
-﻿using System;
-using System.Linq;
-using System.Windows;
+﻿using Microsoft.Win32;
 using ShopShoe.Db;
 using ShopShoe.Helpers;
-using Microsoft.Win32;
-using System.IO;
-using System.Windows.Media.Imaging;
-using System.Text;
-using System.Windows.Controls;
+using System;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Windows;
+using System.Windows.Media.Imaging;
 
 namespace ShopShoe
 {
@@ -163,6 +162,19 @@ namespace ShopShoe
                 if (!ValidateFields())
                     return;
 
+                Product product = _editingProduct ?? new Product();
+
+                product.Name = NameTextBox.Text;
+                product.Article = ArticleTextBox.Text;
+                product.Description = DescriptionTextBox.Text;
+                product.Price = decimal.Parse(PriceTextBox.Text);
+                product.AmountStock = int.Parse(AmountTextBox.Text);
+                product.Discount = decimal.Parse(DiscountTextBox.Text);
+                product.CategoryId = (int)CategoryComboBox.SelectedValue;
+                product.ProducerId = (int)ProducerComboBox.SelectedValue;
+                product.SupplierId = (int)SupplierComboBox.SelectedValue;
+                product.UnitId = (int)UnitComboBox.SelectedValue;
+
                 string savedPhotoPath = _selectedPhotoPath;
 
                 if (!string.IsNullOrEmpty(_selectedPhotoPath) && _selectedPhotoPath != _editingProduct?.Photo)
@@ -173,43 +185,17 @@ namespace ShopShoe
                         File.Delete(_originalPhotoPath);
                     }
                 }
+                product.Photo = savedPhotoPath;
 
                 if (_editingProduct == null)
                 {
-                    Product newProduct = new Product();
-                    newProduct.Name = NameTextBox.Text;
-                    newProduct.Article = ArticleTextBox.Text;
-                    newProduct.Description = DescriptionTextBox.Text;
-                    newProduct.Price = decimal.Parse(PriceTextBox.Text);
-                    newProduct.AmountStock = int.Parse(AmountTextBox.Text);
-                    newProduct.Discount = decimal.Parse(DiscountTextBox.Text);
-                    newProduct.CategoryId = (int)CategoryComboBox.SelectedValue;
-                    newProduct.ProducerId = (int)ProducerComboBox.SelectedValue;
-                    newProduct.SupplierId = (int)SupplierComboBox.SelectedValue;
-                    newProduct.UnitId = (int)UnitComboBox.SelectedValue;
-                    newProduct.Photo = savedPhotoPath;
-
-                    _db.Product.Add(newProduct);
-                    _db.SaveChanges();
-                    MessageHelper.ShowInformation("Товар успешно добавлен!");
+                    _db.Product.Add(product);
                 }
-                else
-                {
-                    _editingProduct.Name = NameTextBox.Text;
-                    _editingProduct.Article = ArticleTextBox.Text;
-                    _editingProduct.Description = DescriptionTextBox.Text;
-                    _editingProduct.Price = decimal.Parse(PriceTextBox.Text);
-                    _editingProduct.AmountStock = int.Parse(AmountTextBox.Text);
-                    _editingProduct.Discount = decimal.Parse(DiscountTextBox.Text);
-                    _editingProduct.CategoryId = (int)CategoryComboBox.SelectedValue;
-                    _editingProduct.ProducerId = (int)ProducerComboBox.SelectedValue;
-                    _editingProduct.SupplierId = (int)SupplierComboBox.SelectedValue;
-                    _editingProduct.UnitId = (int)UnitComboBox.SelectedValue;
-                    _editingProduct.Photo = savedPhotoPath;
 
-                    _db.SaveChanges();
-                    MessageHelper.ShowInformation("Товар успешно обновлен!");
-                }
+                _db.SaveChanges();
+
+                string message = _editingProduct == null ? "Товар успешно добавлен!" : "Товар успешно обновлен!";
+                MessageHelper.ShowInformation(message);
 
                 DialogResult = true;
                 Close();
@@ -219,7 +205,6 @@ namespace ShopShoe
                 MessageHelper.ShowError($"Ошибка сохранения: {ex.Message}");
             }
         }
-
         private string CopyPhotoToProject(string sourcePath)
         {
             string targetDir = AppDomain.CurrentDomain.BaseDirectory + "res/";
@@ -233,7 +218,7 @@ namespace ShopShoe
         }
         private void ResizeImage(string sourcePath, string targetPath, int maxWidth, int maxHeight)
         {
-            using (var srcImage = System.Drawing.Image.FromFile(sourcePath))
+            using (var srcImage = Image.FromFile(sourcePath))
             {
                 int newWidth, newHeight;
 

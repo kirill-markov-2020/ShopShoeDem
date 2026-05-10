@@ -4,16 +4,9 @@ using ShopShoe.Statics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace ShopShoe
 {
@@ -24,11 +17,9 @@ namespace ShopShoe
     {
         private List<Order> _orders = new List<Order>();
         private ShopShoeDbEntities _db = new ShopShoeDbEntities();
-        private User _currentUser;
         public OrderWindow()
         {
             InitializeComponent();
-            _currentUser = CurrentSession.CurrentUser;
             LoadOrders();
             LoadUI();
         }
@@ -39,11 +30,10 @@ namespace ShopShoe
         }
         private void LoadUI()
         {
-            int roleId = _currentUser?.RoleId ?? 3;
 
             AddOrderButton.Visibility = Visibility.Collapsed;
             OrderList.ContextMenu = null;
-            if (roleId == 1)
+            if (AccessHelper.IsAdmin)
             {
                 AddOrderButton.Visibility = Visibility.Visible;
             }
@@ -51,7 +41,7 @@ namespace ShopShoe
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            new ProductWindow(_currentUser).Show();
+            new ProductWindow(CurrentSession.CurrentUser).Show();
             Close();
         }
 
@@ -59,7 +49,7 @@ namespace ShopShoe
         {
             if (IsEditWindowOpen())
                 return;
-            var editWindow = new OrderEditWindow(null, _currentUser);
+            var editWindow = new OrderEditWindow(null, CurrentSession.CurrentUser);
             if (editWindow.ShowDialog() == true)
             {
                 LoadOrders();
@@ -82,7 +72,7 @@ namespace ShopShoe
 
         private void EditOrder_Click(object sender, RoutedEventArgs e)
         {
-            if (_currentUser == null || _currentUser.RoleId != 1)
+            if (!AccessHelper.IsAdmin)
             {
                 MessageHelper.ShowError("Доступ запрещен! Только администратор может редактировать заказы.");
                 return;
@@ -91,7 +81,7 @@ namespace ShopShoe
             var order = menuItem?.Tag as Order;
             if (order == null) return;
             if (IsEditWindowOpen()) return;
-            var editWindow = new OrderEditWindow(order, _currentUser);
+            var editWindow = new OrderEditWindow(order, CurrentSession.CurrentUser);
             if (editWindow.ShowDialog() == true)
             {
                 LoadOrders();
@@ -100,7 +90,7 @@ namespace ShopShoe
         }
         private void DeleteOrder_Click(object sender, RoutedEventArgs e)
         {
-            if (_currentUser == null || _currentUser.RoleId != 1)
+            if (!AccessHelper.IsAdmin)
             {
                 MessageHelper.ShowError("Доступ запрещен! Только администратор может редактировать заказы.");
                 return;
@@ -127,7 +117,7 @@ namespace ShopShoe
 
         private void OrderList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if (_currentUser == null || _currentUser.RoleId != 1)
+            if (!AccessHelper.IsAdmin)
             {
                 MessageHelper.ShowError("Доступ запрещен! Только администратор может редактировать заказы.");
                 return;
@@ -135,7 +125,7 @@ namespace ShopShoe
             var selectedOrder = OrderList.SelectedItem as Order;
             if (selectedOrder == null) return;
             if(IsEditWindowOpen()) return;
-            var editWindow = new OrderEditWindow(selectedOrder, _currentUser);
+            var editWindow = new OrderEditWindow(selectedOrder, CurrentSession.CurrentUser);
             if (editWindow.ShowDialog() == true)
             {
                 LoadOrders();

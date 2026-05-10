@@ -23,13 +23,11 @@ namespace ShopShoe
     {
         private Order _editingOrder;
         private ShopShoeDbEntities _db = new ShopShoeDbEntities();
-        private User _currentUser;
         public OrderEditWindow(Order order = null, User currentUser = null)
         {
 
             InitializeComponent();
             _editingOrder = order;
-            _currentUser = currentUser;
             LoadCombo();
             if (order != null)
             {
@@ -98,34 +96,24 @@ namespace ShopShoe
                 if (!ValidateFields())
                     return;
 
+                Order order = _editingOrder ?? new Order();
+                order.Article = ArticleTextBox.Text;
+                order.StatusId = (int)StatusComboBox.SelectedValue;
+                order.PickUpPointId = (int)PickUpPointComboBox.SelectedValue;
+                order.OrderDate = OrderDatePicker.SelectedDate.Value;
+                order.DeliveryDate = DeliveryDatePicker.SelectedDate ?? DateTime.Now;
+                order.UserId = (int)UserComboBox.SelectedValue;
                 if (_editingOrder == null)
                 {
-                    Order newOrder = new Order();
-                    newOrder.Article = ArticleTextBox.Text;
-                    newOrder.StatusId = (int)StatusComboBox.SelectedValue;
-                    newOrder.PickUpPointId = (int)PickUpPointComboBox.SelectedValue;
-                    newOrder.OrderDate = OrderDatePicker.SelectedDate.Value;
-                    newOrder.DeliveryDate = DeliveryDatePicker.SelectedDate ?? DateTime.Now;
-                    newOrder.UserId = (int)UserComboBox.SelectedValue;
-                    _db.Order.Add(newOrder);
-                    _db.SaveChanges();
-                    MessageHelper.ShowInformation("Заказ успешно добавлен!");
+                    _db.Order.Add(order);
                 }
-                else
-                {
-                    _editingOrder.Article = ArticleTextBox.Text;
-                    _editingOrder.StatusId = (int)StatusComboBox.SelectedValue;
-                    _editingOrder.PickUpPointId = (int)PickUpPointComboBox.SelectedValue;
-                    _editingOrder.OrderDate = OrderDatePicker.SelectedDate.Value;
-                    _editingOrder.DeliveryDate = DeliveryDatePicker.SelectedDate ?? DateTime.Now;
-                    _editingOrder.UserId = (int)UserComboBox.SelectedValue;
-                    _db.SaveChanges();
-                    MessageHelper.ShowInformation("Заказ успешно обновлен!");
-                }
-                DialogResult = true;
-                Close();
 
-                
+                _db.SaveChanges();
+
+                string message = _editingOrder == null ? "Заказ успешно добавлен!" : "Заказ успешно обновлен!";
+                MessageHelper.ShowInformation(message);
+                DialogResult = true;
+                Close(); 
             }
             catch (Exception ex)
             {

@@ -1,5 +1,6 @@
 ﻿using ShopShoe.Db;
 using ShopShoe.Helpers;
+using ShopShoe.Statics;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,11 +17,9 @@ namespace ShopShoe
     {
         private List<Product> _products = new List<Product>();
         private ShopShoeDbEntities _db = new ShopShoeDbEntities();
-        private User _currentUser;
         public ProductWindow(User user = null)
         {
             InitializeComponent();
-            _currentUser = user;
             LoadUI();
             if (user != null)
                 FIO.Text = $"{user.Surname} {user.Name} {user.Patronymic}".Trim();
@@ -30,8 +29,7 @@ namespace ShopShoe
             LoadProducts();
             LoadData();
 
-            if (_currentUser == null || _currentUser.RoleId != 1) 
-                AddProductButton.Visibility = Visibility.Collapsed;
+            
         }
 
         public void LoadProducts()
@@ -43,7 +41,9 @@ namespace ShopShoe
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            CurrentSession.CurrentUser = null;
             new MainWindow().Show();
+
             Close();
         }
 
@@ -59,7 +59,7 @@ namespace ShopShoe
 
         private void LoadUI()
         {
-            int roleId = _currentUser?.RoleId ?? 3;
+
 
             AddProductButton.Visibility = Visibility.Collapsed;
             SortingCombobox.Visibility = Visibility.Collapsed;
@@ -68,27 +68,28 @@ namespace ShopShoe
             OrderButton.Visibility = Visibility.Collapsed;
 
 
-            switch (roleId)
+            if (AccessHelper.IsAdmin)
             {
-                case 1:
-                    AddProductButton.Visibility = Visibility.Visible;
-                    SortingCombobox.Visibility = Visibility.Visible;
-                    FilterCombobox.Visibility = Visibility.Visible;
-                    SearchTextBox.Visibility = Visibility.Visible;
-                    OrderButton.Visibility = Visibility.Visible;
-                    break;
-
-                case 2:
-                    SortingCombobox.Visibility = Visibility.Visible;
-                    FilterCombobox.Visibility = Visibility.Visible;
-                    SearchTextBox.Visibility = Visibility.Visible;
-                    OrderButton.Visibility = Visibility.Visible;
-
-                    break;
-
-                case 3:
-                    break;
+                AddProductButton.Visibility = Visibility.Visible;
+                SortingCombobox.Visibility = Visibility.Visible;
+                FilterCombobox.Visibility = Visibility.Visible;
+                SearchTextBox.Visibility = Visibility.Visible;
+                OrderButton.Visibility = Visibility.Visible;
             }
+            else if (AccessHelper.IsManager)
+            {
+                SortingCombobox.Visibility = Visibility.Visible;
+                FilterCombobox.Visibility = Visibility.Visible;
+                SearchTextBox.Visibility = Visibility.Visible;
+                OrderButton.Visibility = Visibility.Visible;
+            }
+            else if (AccessHelper.IsGuest)
+            {
+
+            }
+
+
+
         }
 
         private void SortingCombobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -161,7 +162,7 @@ namespace ShopShoe
             var product = menuItem?.Tag as Product;
             if (product == null)
                 return;
-            if (_currentUser != null && _currentUser.RoleId == 1)
+            if (AccessHelper.IsAdmin)
             {
                 var selectedProduct = ProductList.SelectedItem as Product;
                 if (selectedProduct == null)
@@ -188,7 +189,7 @@ namespace ShopShoe
             var product = menuItem?.Tag as Product;
             if (product == null)
                 return;
-            if (_currentUser != null && _currentUser.RoleId == 1)
+            if (AccessHelper.IsAdmin)
             {
                 bool isInOrder = _db.OrderItem.Any(oi => oi.ProductId == product.Id);
                 if (isInOrder)
@@ -224,7 +225,7 @@ namespace ShopShoe
 
         private void ProductList_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            if(_currentUser != null && _currentUser.RoleId == 1)
+            if(AccessHelper.IsAdmin)
             {
                 var selectedProduct = ProductList.SelectedItem as Product;
                 if(selectedProduct == null) 
